@@ -1,0 +1,4 @@
+language_tool_python
+textblob
+python-docx
+PyPDF2

@@ -31,24 +31,50 @@ def highlight_errors(text, matches):
         })
     return highlighted_text, details
 
+# @app.route('/check_grammar', methods=['POST'])
+# def check_grammar():
+#     if 'file' not in request.files:
+#         return jsonify({"error": "No file uploaded"})
+
+#     file = request.files['file']
+#     filename = file.filename
+
+#     if not filename:
+#         return jsonify({"error": "No file selected"})
+
+#     if filename.endswith('.pdf'):
+#         text = extract_text_from_pdf(file)
+#     elif filename.endswith('.docx'):
+#         text = extract_text_from_docx(file)
+#     else:
+#         return jsonify({"error": "Unsupported file format"})
+
+#     corrected_text = TextBlob(text).correct()
+#     matches = tool.check(str(corrected_text))
+#     highlighted_text, error_details = highlight_errors(text, matches)
+
+#     return jsonify({
+#         'revised_text': highlighted_text,
+#         'errors': error_details,
+#         'total_errors': len(matches)
+#     })
 @app.route('/check_grammar', methods=['POST'])
 def check_grammar():
-    if 'file' not in request.files:
-        return jsonify({"error": "No file uploaded"})
-
-    file = request.files['file']
-    filename = file.filename
-
-    if not filename:
-        return jsonify({"error": "No file selected"})
-
-    if filename.endswith('.pdf'):
-        text = extract_text_from_pdf(file)
-    elif filename.endswith('.docx'):
-        text = extract_text_from_docx(file)
+    if 'file' in request.files:
+        file = request.files['file']
+        filename = file.filename
+        if filename.endswith('.pdf'):
+            text = extract_text_from_pdf(file)
+        elif filename.endswith('.docx'):
+            text = extract_text_from_docx(file)
+        else:
+            return jsonify({"error": "Unsupported file format"})
+    elif 'text' in request.form:
+        text = request.form['text']
     else:
-        return jsonify({"error": "Unsupported file format"})
+        return jsonify({"error": "No text or file uploaded"})
 
+    # Continue with grammar checking
     corrected_text = TextBlob(text).correct()
     matches = tool.check(str(corrected_text))
     highlighted_text, error_details = highlight_errors(text, matches)

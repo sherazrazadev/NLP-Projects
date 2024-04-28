@@ -1,0 +1,143 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Grammar Checker</title>
+    <style>
+        .error { color: red; font-weight: bold; } /* Styling for highlighted errors */
+        #error-details { margin-top: 20px; }
+        #error-list { color: red; margin-top: 10px; }
+        li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <input type="file" id="document-upload">
+    <button onclick="checkGrammar()">Check Grammar</button>
+    <div id="results"></div>
+    <div id="error-details">
+        <h3>Error Details:</h3>
+        <ul id="error-list"></ul>
+    </div>
+
+    <script>
+        function checkGrammar() {
+            const fileInput = document.getElementById("document-upload");
+            if (!fileInput.files.length) {
+                alert("Please select a file");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+
+            fetch('/check_grammar', {
+                method: 'POST',
+                body: formData         
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById("results").innerHTML = data.revised_text;
+
+                    // Display errors
+                    const errorList = document.getElementById("error-list");
+                    errorList.innerHTML = ''; // Clear previous errors
+                    if (data.total_errors > 0) {
+                        data.errors.forEach(error => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = `Error: "${error.error_text}" in context "...${error.context}...". Suggestions: ${error.suggestions.join(', ')}`;
+                            errorList.appendChild(listItem);
+                        });
+                    } else {
+                        errorList.textContent = 'No errors found!';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while processing your file.');
+            });
+        }
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grammar Checker</title>
+    <style>
+        .error { color: red; font-weight: bold; }
+        #error-details { margin-top: 20px; }
+        #error-list { color: red; margin-top: 10px; }
+        li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h2>Upload Document</h2>
+    <input type="file" id="document-upload">
+    <button onclick="checkGrammar('file')">Check Grammar</button>
+
+    <h2>Or Enter Text</h2>
+    <textarea id="text-input" rows="10" cols="50"></textarea>
+    <button onclick="checkGrammar('text')">Check Text</button>
+
+    <div id="results"></div>
+    <div id="error-details">
+        <h3>Error Details:</h3>
+        <ul id="error-list"></ul>
+    </div>
+
+    <script>
+        function checkGrammar(type) {
+            let formData = new FormData();
+
+            if (type === 'file') {
+                const fileInput = document.getElementById('document-upload');
+                if (!fileInput.files.length) {
+                    alert("Please select a file");
+                    return;
+                }
+                const file = fileInput.files[0];
+                formData.append("file", file);
+            } else if (type === 'text') {
+                const textInput = document.getElementById('text-input').value;
+                if (!textInput.trim()) {
+                    alert("Please enter some text");
+                    return;
+                }
+                formData.append("text", textInput);
+            }
+
+            fetch('/check_grammar', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById("results").innerHTML = data.revised_text;
+                    const errorList = document.getElementById("error-list");
+                    errorList.innerHTML = ''; // Clear previous errors
+                    if (data.total_errors > 0) {
+                        data.errors.forEach(error => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = `Error: "${error.error_text}" in context "...${error.context}...". Suggestions: ${error.suggestions.join(', ')}`;
+                            errorList.appendChild(listItem);
+                        });
+                    } else {
+                        errorList.textContent = 'No errors found!';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while processing your request.');
+            });
+        }
+    </script>
+</body>
+</html>
