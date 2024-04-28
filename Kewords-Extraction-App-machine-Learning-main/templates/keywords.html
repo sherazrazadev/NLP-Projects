@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keyword Extraction Results</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 500px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Keyword Extraction Results</h2>
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th>Keyword</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for keyword, score in keywords.items() %}
+                <tr>
+                    <td>{{ keyword }}</td>
+                    <td>{{ score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

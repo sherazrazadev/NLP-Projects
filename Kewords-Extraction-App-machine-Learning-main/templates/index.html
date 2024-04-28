@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keyword Extraction</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 500px;
+            margin-top: 50px;
+            background:black;
+            color: white;
+            padding-top:3%;
+            padding-bottom:3%;
+            padding-left:5%;
+            padding-right:5%;
+            border-radius:15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center text-green">Keyword Extraction</h2>
+        <form method="POST" action="/extract_keywords" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="document">Upload Document:</label>
+                <input type="file" name="file" class="form-control" id="document">
+            </div>
+            <button type="submit" class="btn btn-primary">Extract Keywords</button>
+        </form>
+        <hr>
+        <form method="POST" action="/search_keywords">
+            <div class="form-group">
+                <label for="search">Search Keywords:</label>
+                <input type="text" name="search" class="form-control" id="search">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</body>
+</html>
