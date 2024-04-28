@@ -1,0 +1,11 @@
+flask
+nltk
+spacy
+
+
+
+
+
+
+# Download stopwords via nltk.download('stopwords')
+#download "en_core_web_sm" from spacy using terminal command [python -m spacy download en_core_web_sm
